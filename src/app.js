@@ -7,7 +7,6 @@ const usr = "lfresnog";
 const pwd = "123456abc";
 const url = "miprimercluster-hjfah.gcp.mongodb.net/test?retryWrites=true&w=majority";
 
-
 /**
  * Connects to MongoDB Server and returns connected client
  * @param {string} usr MongoDB Server user
@@ -20,7 +19,6 @@ const connectToDb = async function(usr, pwd, url) {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
-
   await client.connect();
   return client;
 };
@@ -56,7 +54,6 @@ const runGraphQLServer = function(context) {
     `;
 
   const resolvers = {
-
     Query: {
         logIn: async (parent, args, ctx, info) => {
             const {name,password} = args;
@@ -71,8 +68,7 @@ const runGraphQLServer = function(context) {
             }
             else{
                 throw new Error("User/password incorrect");
-            }
-            
+            } 
         },
         logOut: async (parent, args, ctx, info) => {
             const {name,password} = args;
@@ -86,8 +82,7 @@ const runGraphQLServer = function(context) {
             }
             else{
                 throw new Error("User/password incorrect");
-            }
-            
+            }   
         },
         getFacturas: async (parent, args, ctx, info) => {
             const {name,token} = args;
@@ -98,15 +93,11 @@ const runGraphQLServer = function(context) {
             const f_user = await user_collection.findOne({name: name});
             if(f_user.token == token){
               return await factura_collection.find({titular: f_user._id}).toArray();
-
             }
             else{
                 throw new Error("User not logged");
-            }
-            
+            }  
         },
-
-
     },
     
     Mutation: {
@@ -136,7 +127,6 @@ const runGraphQLServer = function(context) {
                 const d = new Date();
                 const date = `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
                 const result = await factura_collection.insertOne({date: date, concept,quantity,titular:f_user._id});
-
                 return {
                     id: result.ops[0]._id,
                     date,
@@ -172,7 +162,6 @@ const runGraphQLServer = function(context) {
   const options = {
     port: 3004
   };
-
   try {
     server.start(options, ({ port }) =>
       console.log(
