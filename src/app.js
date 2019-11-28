@@ -99,7 +99,6 @@ const runGraphQLServer = function(context) {
             }  
         },
     },
-    
     Mutation: {
         addTitular: async (parent, args, ctx, info) => {
             const {name,password} = args;
@@ -123,7 +122,7 @@ const runGraphQLServer = function(context) {
             const user_collection = db.collection("users");
             const factura_collection = db.collection("facturas");
             const f_user = await user_collection.findOne({name: titular});
-            if(f_user.token){
+            if(f_user.token == token){
                 const d = new Date();
                 const date = `${d.getDate()}-${d.getMonth()}-${d.getFullYear()}`;
                 const result = await factura_collection.insertOne({date: date, concept,quantity,titular:f_user._id});
